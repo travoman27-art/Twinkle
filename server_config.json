@@ -1,0 +1,32 @@
+{
+    "Kyiv (Ukraine Central)": {
+        "ip_range": "193.106.31.0/24",
+        "ping": "12 ms",
+        "active": true
+    },
+    "Moscow (RU-Central)": {
+        "ip_range": "5.45.192.0/18",
+        "ping": "35 ms",
+        "active": false
+    },
+    "Saint Petersburg": {
+        "ip_range": "95.173.136.0/21",
+        "ping": "42 ms",
+        "active": false
+    },
+    "Novosibirsk (Siberia)": {
+        "ip_range": "185.16.198.0/24",
+        "ping": "75 ms",
+        "active": false
+    },
+    "Ekaterinburg": {
+        "ip_range": "212.109.192.0/18",
+        "ping": "58 ms",
+        "active": false
+    },
+    "Krasnodar": {
+        "ip_range": "194.85.0.0/16",
+        "ping": "45 ms",
+        "active": false
+    }
+}
