@@ -39,7 +39,11 @@ jobs:
     - name: Install Buildozer and Cython
       run: |
         pip install --upgrade pip
-        pip install Cython==0.29.36 buildozer
+        pip install Cython==0.29.36 buildozer==1.5.0
+
+    - name: Clean Buildozer Cache
+      run: |
+        rm -rf ~/.buildozer/android/platform/android-sdk
 
     - name: Build APK with Buildozer
       run: |
@@ -50,4 +54,3 @@ jobs:
       with:
         name: app-debug
         path: bin/*.apk
-        
