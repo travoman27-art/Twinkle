@@ -4,7 +4,6 @@ package.name = serverselector
 package.domain = org.twinklehub
 source.dir = .
 source.include_exts = py,json
-source.main_filename = server_selector.py
 version = 1.0
 requirements = python3,kivy
 orientation = portrait
