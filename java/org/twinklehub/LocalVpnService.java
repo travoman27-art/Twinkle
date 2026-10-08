@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import androidx.core.app.NotificationCompat;
 import java.io.IOException;
 
 public class LocalVpnService extends VpnService {
@@ -16,27 +15,34 @@ public class LocalVpnService extends VpnService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         createNotificationChannel();
-        Notification notification = new NotificationCompat.Builder(this, "vpn_channel")
+        
+        Notification.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builder = new Notification.Builder(this, "vpn_channel");
+        } else {
+            builder = new Notification.Builder(this);
+        }
+        
+        Notification notification = builder
                 .setContentTitle("TwinkleHub VPN")
                 .setContentText("Фильтрация серверов активна")
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
-                .setPriority(NotificationCompat.PRIORITY_LOW)
                 .build();
 
         startForeground(1, notification);
 
         if (mInterface == null) {
             try {
-                Builder builder = new Builder();
-                builder.addAddress("10.0.0.2", 24);
-                builder.addRoute("0.0.0.0", 0);
-                builder.setSession("TwinkleHub Server Selector");
+                Builder vpnBuilder = new Builder();
+                vpnBuilder.addAddress("10.0.0.2", 24);
+                vpnBuilder.addRoute("0.0.0.0", 0);
+                vpnBuilder.setSession("TwinkleHub Server Selector");
                 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    builder.addDisallowedApplication(getPackageName());
+                    vpnBuilder.addDisallowedApplication(getPackageName());
                 }
 
-                mInterface = builder.establish();
+                mInterface = vpnBuilder.establish();
             } catch (Exception e) {
                 e.printStackTrace();
             }
