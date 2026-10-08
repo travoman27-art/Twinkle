@@ -48,9 +48,6 @@ p4a.branch = master
 # (list) Source files to add to the Android project (Java wrapper for VPN)
 android.add_src = java
 
-# (str) Custom AndroidManifest.xml template to register LocalVpnService properly
-android.manifest_template = manifest.tmpl
-
 # (bool) Enable/disable gnu stl shared library
 android.copy_libs = 1
 
