@@ -36,8 +36,8 @@ android.api = 33
 # (int) Minimum API your APK will support
 android.min_api = 21
 
-# (str) Android NDK version recommended by p4a
-android.ndk = 29c
+# (str) Working Android NDK version
+android.ndk = 25b
 
 # (list) Source files to add to the Android project (Java wrapper for VPN)
 android.add_src = java
