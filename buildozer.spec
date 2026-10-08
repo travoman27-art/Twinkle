@@ -1,4 +1,5 @@
 [app]
+
 title = TwinkleHub
 package.name = twinklehub
 package.domain = org
@@ -8,14 +9,16 @@ version = 1.0
 requirements = python3,kivy,jnius
 orientation = portrait
 fullscreen = 0
+
+# Права на интернет и VPN
 android.permissions = INTERNET, BIND_VPN_SERVICE
+
 android.api = 33
 android.min_api = 21
 android.ndk = 25b
 
-# Подключаем Java-сервис и правильный шаблон манифеста
+# Подключаем Java-сервис (Buildozer сам добавит его в стандартный манифест)
 android.add_src = java
-android.manifest_template = manifest.tmpl
 
 android.copy_libs = 1
 android.archs = arm64-v8a
