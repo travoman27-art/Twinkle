@@ -19,6 +19,7 @@ android.ndk = 25b
 
 # Подключаем Java-сервис (Buildozer сам добавит его в стандартный манифест)
 android.add_src = java
+android.manifest_template = manifest.tmpl
 
 android.copy_libs = 1
 android.archs = arm64-v8a
