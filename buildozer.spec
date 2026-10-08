@@ -42,9 +42,6 @@ android.ndk = 25b
 # (str) Android SDK version to use
 android.sdk = 33
 
-# (str) python-for-android branch to use
-p4a.branch = master
-
 # (list) Source files to add to the Android project (Java wrapper for VPN)
 android.add_src = java
 
