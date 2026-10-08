@@ -32,8 +32,7 @@ public class LocalVpnService extends VpnService {
                 builder.addRoute("0.0.0.0", 0);
                 builder.setSession("TwinkleHub Server Selector");
                 
-                // Исключаем само приложение из туннеля, чтобы сокеты пинга работали напрямую
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.L) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     builder.addDisallowedApplication(getPackageName());
                 }
 
