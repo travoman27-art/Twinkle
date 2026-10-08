@@ -1,17 +1,17 @@
+import os
 from pathlib import Path
-from pythonforandroid.toolchain import ToolchainCL
 
-def after_apk_build(toolchain: ToolchainCL):
-    pass
-
-def before_apk_build(toolchain: ToolchainCL):
-    # Находим сгенерированный AndroidManifest.xml перед компиляцией APK
-    manifest_path = Path(toolchain._dist.dist_dir) / "src" / "main" / "AndroidManifest.xml"
-    if manifest_path.exists():
-        content = manifest_path.read_text(encoding="utf-8")
-        
-        # Если сервис еще не прописан, внедряем его внутрь тега <application>
-        service_tag = '''
+def patch_manifest():
+    # Автоматически ищем все файлы AndroidManifest.xml в рабочей директории сборки
+    for root, dirs, files in os.walk("."):
+        if "AndroidManifest.xml" in files:
+            manifest_path = Path(root) / "AndroidManifest.xml"
+            try:
+                content = manifest_path.read_text(encoding="utf-8", errors="ignore")
+                
+                # Проверяем, что наш сервис еще не добавлен и файл содержит тег приложения
+                if "org.twinklehub.LocalVpnService" not in content and "</application>" in content:
+                    service_tag = '''
         <service
             android:name="org.twinklehub.LocalVpnService"
             android:permission="android.permission.BIND_VPN_SERVICE"
@@ -20,11 +20,13 @@ def before_apk_build(toolchain: ToolchainCL):
                 <action android:name="android.net.VpnService" />
             </intent-filter>
         </service>
-        </application>
-        '''
-        
-        if "org.twinklehub.LocalVpnService" not in content:
-            content = content.replace("</application>", service_tag)
-            manifest_path.write_text(content, encoding="utf-8")
-            print("[Hook] LocalVpnService успешно добавлен в AndroidManifest.xml!")
-          
+    </application>'''
+                    
+                    content = content.replace("</application>", service_tag)
+                    manifest_path.write_text(content, encoding="utf-8")
+                    print(f"[Hook Success] Успешно добавлен VPN-сервис в: {manifest_path}")
+            except Exception as e:
+                pass
+
+# Запускаем патч при импорте хука сборщиком
+patch_manifest()
