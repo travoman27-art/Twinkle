@@ -1,25 +1,26 @@
 [app]
 
 # (str) Title of your application
-title = TwinkleHub Server Selector
+title = TwinkleHub
 
 # (str) Package name
-package.name = serverselector
+package.name = twinklehub
 
 # (str) Package domain (needed for android packaging)
-package.domain = org.twinklehub
+package.domain = org
 
-# (list) Source files to include (let it be relative to the dir)
-source.include_exts = py,png,jpg,kv,atlas,java,json
+# (str) Source files to include (let it include standard assets)
+source.include_exts = py,png,jpg,kv,atlas
 
-# (list) Directory where the source files are stored
+# (str) Application source directory
 source.dir = .
 
 # (str) Application versioning
-version = 1.2
+version = 1.0
 
 # (list) Application requirements
-requirements = python3,kivy
+# Specify Python dependencies here
+requirements = python3,kivy,jnius
 
 # (list) Supported orientations
 orientation = portrait
@@ -27,31 +28,37 @@ orientation = portrait
 # (bool) Indicate if the application should be fullscreen or not
 fullscreen = 0
 
-# (list) Permissions (для работы системной службы VPN)
-android.permissions = INTERNET,ACCESS_NETWORK_STATE,BIND_VPN_SERVICE,FOREGROUND_SERVICE
+# (list) Permissions
+android.permissions = INTERNET, BIND_VPN_SERVICE
 
-# (str) Путь к нативным Java-файлам (папка java/org/twinklehub/)
-android.add_src = java
-
-# (list) Target architectures
-android.archs = arm64-v8a
-
-# (bool) Automatically accept SDK license
-android.accept_sdk_license = True
-
-# (int) Target Android API
+# (int) Target Android API, should be as high as possible.
 android.api = 33
 
-# (int) Minimum API your APK will support
-android.minapi = 21
+# (int) Minimum API your APK will support.
+android.min_api = 21
 
-# (int) Android SDK version to use
+# (str) Android NDK version to use
+android.ndk = 25b
+
+# (str) Android SDK version to use
 android.sdk = 33
+
+# (str) python-for-android branch to use
+p4a.branch = master
+
+# (list) Source files to add to the Android project (Java wrapper for VPN)
+android.add_src = java
+
+# (bool) Enable/disable gnu stl shared library
+android.copy_libs = 1
+
+# (str) Supported architectures
+android.archs = arm64-v8a
 
 [buildozer]
 
-# (int) Log level (0 = error only, 1 = info, 2 = debug command)
+# (int) Log level (0 = error, 1 = info, 2 = debug (with command output))
 log_level = 2
 
-# (int) Display warning if buildozer is run as root (0 = False, 1 = True)
-warn_on_root = 0
+# (int) Display warning if buildozer is run as root (0 = disable, 1 = enable)
+warn_on_root = 1
