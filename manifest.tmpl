@@ -1,0 +1,42 @@
+{% set xargs = ''.join([' -Xarguments=', ' '.join(args)] if args else []) %}
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="{{ p4a.package }}"
+    android:versionCode="{{ p4a.version_code }}"
+    android:versionName="{{ p4a.version_name }}">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.BIND_VPN_SERVICE" />
+
+    <application
+        android:label="{{ p4a.app_name }}"
+        android:icon="@drawable/icon"
+        android:roundIcon="@drawable/icon"
+        android:allowBackup="false"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+
+        <activity
+            android:name="org.kivy.android.PythonActivity"
+            android:label="{{ p4a.app_name }}"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|uiMode"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Обязательная регистрация нашего VPN-сервиса, чтобы Android разрешил его запуск -->
+        <service
+            android:name="org.twinklehub.LocalVpnService"
+            android:permission="android.permission.BIND_VPN_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.VpnService" />
+            </intent-filter>
+        </service>
+
+    </application>
+</manifest>
