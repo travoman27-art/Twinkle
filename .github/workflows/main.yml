@@ -22,7 +22,7 @@ jobs:
 
       - name: Build APK directly with python-for-android
         run: |
-          p4a apk \
+          python3 -m pythonforandroid.toolchain apk \
             --private . \
             --package=org.twinklehub \
             --name="TwinkleHub" \
