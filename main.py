@@ -16,6 +16,7 @@ if IS_ANDROID:
     PythonActivity = autoclass('org.kivy.android.PythonActivity')
     Intent = autoclass('android.content.Intent')
     VpnService = autoclass('android.net.VpnService')
+    BuildVersion = autoclass('android.os.Build$VERSION')
 
 KV_CODE = '''
 <ServerCard>:
@@ -331,7 +332,6 @@ class TwinkleHubApp(App):
         threading.Thread(target=self.ping_loop, daemon=True).start()
 
     def ping_target(self, name):
-        """Умный динамический замер пинга с адекватным отображением показателей"""
         try:
             start_time = time.time()
             with socket.create_connection(("8.8.8.8", 53), timeout=1.0):
@@ -353,7 +353,6 @@ class TwinkleHubApp(App):
             return f"{max(65, latency + 45)} мс"
 
     def ping_loop(self):
-        """Фоновый поток замера показателей задержки"""
         while True:
             for card in self.cards:
                 result = self.ping_target(card.server_name)
@@ -365,14 +364,12 @@ class TwinkleHubApp(App):
         popup.open()
 
     def start_background_filter_engine(self, server_name):
-        """Запуск реальной службы VpnService через Android Intent"""
+        """Запуск защищенной службы со стартом Foreground (для шторки Android)"""
         self.is_running = True
         
         def background_worker():
-            print(f"[Engine] Фоновый поток фильтрации запущен для узла: {server_name}")
             while self.is_running:
                 time.sleep(1.5)
-            print("[Engine] Фоновая фильтрация остановлена.")
 
         threading.Thread(target=background_worker, daemon=True).start()
 
@@ -384,12 +381,15 @@ class TwinkleHubApp(App):
                     activity.startActivityForResult(intent, 0)
                 else:
                     service_intent = Intent(activity, autoclass('org.twinklehub.LocalVpnService'))
-                    activity.startService(service_intent)
-                    print(f"[VPN Service] Официальный туннель для {server_name} успешно активирован!")
+                    if BuildVersion.SDK_INT >= 26:
+                        activity.startForegroundService(service_intent)
+                    else:
+                        activity.startService(service_intent)
+                    print(f"[VPN Service] Служба для {server_name} успешно запущена в фоне!")
             except Exception as e:
                 print(f"[VPN Error]: {e}")
         else:
-            print(f"[Desktop Mode] Симуляция VPN-туннеля для сервера: {server_name}")
+            print(f"[Desktop Mode] Симуляция VPN для сервера: {server_name}")
 
 if __name__ == '__main__':
     TwinkleHubApp().run()
