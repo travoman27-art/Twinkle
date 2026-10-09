@@ -1,4 +1,4 @@
-name: Direct P4A APK Build
+name: Build APK with Buildozer
 
 on:
   push:
@@ -16,30 +16,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Fix permissions for workspace
+      - name: Fix workspace permissions
         run: |
           git config --global --add safe.directory /github/workspace
 
-      - name: Build APK directly with python-for-android
+      - name: Run Buildozer
         run: |
-          python3 -m pythonforandroid.toolchain apk \
-            --private . \
-            --package=org.twinklehub \
-            --name="TwinkleHub" \
-            --version=1.0 \
-            --bootstrap=sdl2 \
-            --requirements=python3,kivy,jnius \
-            --arch=arm64-v8a \
-            --android-api 33 \
-            --ndk-dir /home/user/android/android-ndk-r25b \
-            --sdk-dir /home/user/android/android-sdk \
-            --permissions INTERNET BIND_VPN_SERVICE \
-            --add-source java \
-            --verbosity=2
+          buildozer -v android debug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: twinklehub-direct-apk
-          path: '*.apk'
+          name: twinklehub-apk
+          path: bin/*.apk
           
