@@ -11,6 +11,8 @@ jobs:
     container:
       image: kivy/buildozer:latest
       options: --user root
+    env:
+      BUILDOZER_ALLOW_ROOT: "1"
 
     steps:
       - name: Checkout code
